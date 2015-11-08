@@ -16,9 +16,13 @@ indicators
 
 
 1.AG.LND.FRST.ZS --> Forest area (% of land area)
+
 2.AG.LND.AGRI.ZS --> Agricultural land (% of land area)
+
 3.EN.ATM.CO2E.PC --> CO2 emissions (metric tons per capita)
+
 4.NY.GDP.MKTP.KD.ZG --> GDP Growth (annual %)
+
 5.SP.POP.TOTL --> population, total
 
 Example :
