@@ -12,8 +12,7 @@ http://api.worldbank.org/countries?format=jsonP&prefix=Getdata
 get topics :
 http://api.worldbank.org/topics/
 
-indicators
-
+Indicators :
 
 1.AG.LND.FRST.ZS --> Forest area (% of land area)
 
@@ -24,6 +23,10 @@ indicators
 4.NY.GDP.MKTP.KD.ZG --> GDP Growth (annual %)
 
 5.SP.POP.TOTL --> population, total
+
+Source API :
+
+http://api.worldbank.org/
 
 Example :
 
