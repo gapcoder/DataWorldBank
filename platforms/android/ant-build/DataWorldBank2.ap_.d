@@ -39,7 +39,10 @@ D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\images \
 D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\index.css \
 D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\jquery.jqplot.min.css \
 D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\jquery.mobile-1.4.5.min.css \
+D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\jquery.mobile.icons.min.css \
 D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\jquery.mobile.theme-1.4.5.min.css \
+D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\MyTheme.css \
+D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\MyTheme.min.css \
 D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\images\ajax-loader.gif \
 D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\images\icons-png \
 D:\12023227\Workspace\dataWorldBank2\platforms\android\assets\www\css\images\icons-svg \

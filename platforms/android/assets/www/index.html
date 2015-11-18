@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>jQM Complex Demo</title>
+		<title>Ismail</title>
 		<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 
 		<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css"/>
 		<link rel="stylesheet" href="css/jquery.mobile.theme-1.4.5.min.css"/>
+
+		<link rel="stylesheet" href="css/jquery.mobile.icons.min.css"/>
+		<link rel="stylesheet" href="css/MyTheme.min.css"/>
 
 		<link rel="stylesheet" href="css/jquery.jqplot.min.css"/>
 
@@ -21,86 +24,93 @@
 		<script src="js/plugins/jqplot.categoryAxisRenderer.min.js" type="text/javascript"></script>
 
 		<script type="text/javascript" src="cordova.js"></script>
-		
+
 		<script type="text/javascript">
-			var page;
 			var country = '';
-			var title='';
-			var xLabel='';
-			var yLabel='';
-			var indicators='';
+			var title = '';
+			var xLabel = '';
+			var yLabel = '';
+			var indicators = '';
 			var plot;
-			
-			const noData='<h4 style="color:red">No data found</h4>';
-			
+
+			const noData = '<h4 style="color:black">No data found</h4>';
+
 			$(document).on('pageinit', '#home', function() {
-				page = 1;
-				requestCountries();
+				requestCountries(1);
 			});
 
 			function sendRequest(url) {
 				$.ajax({
 					url : url,
 					dataType : "jsonp",
-					async : true,
 					headers : {
 						'Content-Type' : 'text/javascript'
 					},
 					error : function(request, error) {
 						//alert('Network error has occurred please try again!');
-						//console.log(error);
+					},
+					beforeSend : function() {
+						showLoading();
+					},
+					complete : function() {
+						$.mobile.loading('hide');
 					}
 				});
 			};
 
 			$(document).on('pageshow', '#chart', function() {
 				$("#chartPlot").empty();
-				xLabel='Year';
-				var url='';
-				if (indicators=='forest') {
-					title='Forest Area (% of land area) of ';
-					yLabel='% of land area';
-					url='http://api.worldbank.org/countries/' + country + '/indicators/ag.lnd.frst.zs?format=jsonp&prefix=gf';
-				}else if (indicators=='agri') {
-					title='Agricultural Land (% of land area) of ';
-					yLabel='% of land area';
-					url='http://api.worldbank.org/countries/' + country + '/indicators/ag.lnd.agri.zs?format=jsonp&prefix=gf';
-				}else if (indicators=='co2') {
-					title='CO2 Emissions (metric tons per capita) of ';
-					yLabel='Metric tons per capita';
-					url='http://api.worldbank.org/countries/' + country + '/indicators/en.atm.co2e.pc?format=jsonp&prefix=gf';
-				}else if (indicators=='gdpg') {
-					title='GDP Growth (annual %) of ';
-					yLabel='Annual %';
+				xLabel = 'Year';
+				var url = '';
+				if (indicators == 'forest') {
+					title = 'Forest Area (% of land area) of ';
+					yLabel = '% of land area';
+					url = 'http://api.worldbank.org/countries/' + country + '/indicators/ag.lnd.frst.zs?format=jsonp&prefix=gf';
+				} else if (indicators == 'agri') {
+					title = 'Agricultural Land (% of land area) of ';
+					yLabel = '% of land area';
+					url = 'http://api.worldbank.org/countries/' + country + '/indicators/ag.lnd.agri.zs?format=jsonp&prefix=gf';
+				} else if (indicators == 'co2') {
+					title = 'CO2 Emissions (metric tons per capita) of ';
+					yLabel = 'Metric tons per capita';
+					url = 'http://api.worldbank.org/countries/' + country + '/indicators/en.atm.co2e.pc?format=jsonp&prefix=gf';
+				} else if (indicators == 'gdpg') {
+					title = 'GDP Growth (annual %) of ';
+					yLabel = 'Annual %';
 					sendRequest('http://api.worldbank.org/countries/' + country + '/indicators/ny.gdp.mktp.kd.zg?format=jsonp&prefix=gf');
-				}else { //pop
-					title='Population, Total of ';
-					yLabel='Total';
-					url='http://api.worldbank.org/countries/' + country + '/indicators/sp.pop.totl?format=jsonp&prefix=gf';
+				} else {//pop
+					title = 'Population, Total of ';
+					yLabel = 'Total';
+					url = 'http://api.worldbank.org/countries/' + country + '/indicators/sp.pop.totl?format=jsonp&prefix=gf';
 				}
 				sendRequest(url);
 			});
 			
-			 $(window).bind('resize', function(event, ui) {
-			 	if (plot != null || plot != undefined)
-        			plot.replot( { resetAxes: true } );
-    		});
-    		
-    		function changeIndicators(i) {
-    			//console.log(i);
-    			this.indicators=i;
-    		}
+			$(document).bind('mobileinit',function(){
+				//$.mobile.selectmenu.prototype.options.hidePlaceholderMenuItems = false;
+			});
+
+			$(window).bind('resize', function(event, ui) {
+				if (plot != null || plot != undefined)
+					plot.replot({
+						resetAxes : true
+					});
+			});
+
+			function changeIndicators(i) {
+				this.indicators = i;
+			}
 
 			function gf(result) {
 
 				var resultJson = [];
 				var data = result[1];
-				var z=0;
+				var z = 0;
 				if (data != null) {
 					for (var i = 0; i < data.length; i++) {
 						if (data[i].value != null) {
 							resultJson.push([data[i].date, parseFloat(data[i].value)]);
-							if (z>10)
+							if (z > 10)
 								break;
 							++z;
 						}
@@ -127,14 +137,23 @@
 								}
 							}
 						});
-						
+
 						plot.replot();
 					} else {
 						$("#chartPlot").html(noData);
 					}
-				}else {
+				} else {
 					$("#chartPlot").html(noData);
 				}
+			};
+
+			function showLoading() {
+				$.mobile.loading('show', {
+					text : 'Loading',
+					textVisible : true,
+					theme : 'a',
+					html : ""
+				});
 			};
 
 			function setCountry(code) {
@@ -145,18 +164,22 @@
 				});
 			};
 
-			function requestCountries() {
+			function requestCountries(page) {
 				var url = 'http://api.worldbank.org/countries?format=jsonp&prefix=gc&page=' + page;
 				$.ajax({
 					url : url,
 					dataType : "jsonp",
-					//async : true,
 					headers : {
 						'Content-Type' : 'text/javascript'
 					},
 					error : function(request, error) {
 						//alert('Network error has occurred please try again!');
-						//console.log(error);
+					},
+					beforeSend : function() {
+						showLoading();
+					},
+					complete : function() {
+						$.mobile.loading('hide');
 					}
 				});
 			};
@@ -172,45 +195,43 @@
 				$('#countries').listview('refresh');
 				items = '';
 				for (var i = 1; i <= pages.pages; i++) {
-					var sl = '';
-
-					/*
-					 if (i==page) {
-					 sl='selected="selected"';
-					 }*/
+					var sl='';
+					if(i==pages.page) sl='selected="selected"';
+					
 					items += '<option ' + sl + ' value="' + i + '">Page ' + i + '</option>';
 				}
-				$("#pages").empty().append(items);
+				$("#pages").empty().append(items).selectmenu('refresh', true);
 			}
 
 			function changePages(e) {
-				page = $(e).val();
-				requestCountries();
+				requestCountries($(e).val());
 			};
 		</script>
 	</head>
 	<body>
 		<div data-role="page" id="home">
 			<div data-theme="a" data-role="header">
-				<a href="#" class="ui-btn-right" data-transition="slide" onclick="navigator.app.exitApp();">Exit</a>
+				<a href="#" class="ui-btn-right" data-transition="slide" data-icon="delete" onclick="navigator.app.exitApp();">Exit</a>
 				<h3> Country List </h3>
 			</div>
-			<div data-role="content">
-				<select data-mini="true" id="pages" onchange="changePages(this)" data-inline="false">
-
+			<div data-role="fieldcontain">
+				<select id="pages" onchange="changePages(this)" data-native-menu="false">
 				</select>
+			</div>
+			<div data-role="content">
+				
 				<ul data-theme="a" data-role="listview" id="countries" data-filter="true" data-filter-placeholder="Search Country..." data-inset="true">
 
 				</ul>
 
 			</div>
-			<div data-theme="a" data-role="footer">
-				<h1>Copyright 2015 - Data world bank 2</h1>
+			<div data-theme="a" data-role="footer" data-position="fixed">
+				<h1>Copyright 2015 - Ismail</h1>
 			</div>
 		</div>
 		<div data-role="page" id="indicators">
 			<div data-theme="a" data-role="header">
-				<a href="#home" class="ui-btn-left" data-transition="slide" data-direction="reverse">Back</a>
+				<a href="#home" class="ui-btn-left" data-transition="slide" data-icon="back" data-direction="reverse">Back</a>
 				<h3>Indicators</h3>
 			</div>
 			<div data-role="content">
@@ -232,20 +253,21 @@
 					</li>
 				</ul>
 			</div>
-			<div data-theme="a" data-role="footer">
-				<h1>Copyright 2015 - Data world bank 2</h1>
+			<div data-theme="a" data-role="footer" data-position="fixed">
+				<h1>Copyright 2015 - Ismail</h1>
 			</div>
 		</div>
 		<div data-role="page" id="chart">
 			<div data-theme="a" data-role="header">
-				<a href="#indicators" class="ui-btn-left" data-transition="slide" data-direction="reverse">Back</a>
+				<a href="#indicators" class="ui-btn-back" data-transition="slide" data-icon="back" data-direction="reverse">Back</a>
 				<h3>Chart</h3>
+				<a href="#home" class="ui-btn-home" data-transition="slide" data-icon="home" data-direction="reverse">Home</a>
 			</div>
 			<div data-role="content">
 				<div id="chartPlot"></div>
 			</div>
-			<div data-theme="a" data-role="footer">
-				<h1>Copyright 2015 - Data world bank 2</h1>
+			<div data-theme="a" data-role="footer" data-position="fixed">
+				<h1>Copyright 2015 - Ismail</h1>
 			</div>
 		</div>
 	</body>
