@@ -33,9 +33,9 @@
 			var indicators = '';
 			var plot;
 
-			const noData = '<h4 style="color:black">No data found</h4>';
+			const noData = '<h4 style="color:red">No data found</h4>';
 
-			$(document).on('pageinit', '#home', function() {
+			$(document).on('pageshow', '#home', function() {
 				requestCountries(1);
 			});
 
@@ -211,8 +211,9 @@
 	<body>
 		<div data-role="page" id="home">
 			<div data-theme="a" data-role="header">
-				<a href="#" class="ui-btn-right" data-transition="slide" data-icon="delete" onclick="navigator.app.exitApp();">Exit</a>
+				<a href="#" class="ui-btn-left" data-transition="slide" data-icon="refresh" onclick="requestCountries('1')">Refresh</a>
 				<h3> Country List </h3>
+				<a href="#" class="ui-btn-right" data-transition="slide" data-icon="delete" onclick="navigator.app.exitApp();">Exit</a>
 			</div>
 			<div data-role="fieldcontain">
 				<select id="pages" onchange="changePages(this)" data-native-menu="false">
