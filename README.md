@@ -1,4 +1,8 @@
 # DataWorldBank
+Sample application made with Jquery Mobile
+Direct fork from https://github.com/ismailmu/DataWorldBank
+
+## Original Readme
 Data World Bank Mobile Using Jquery Mobile & Apache Cordova
 
 get country :
